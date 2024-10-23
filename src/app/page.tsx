@@ -105,9 +105,9 @@ export default function Home() {
             <div className="bg-white w-[500px] h-[500px] rounded-2xl shadow-lg p-4 overflow-hidden">
               {/* <AiAvatar /> */}
               <SimliOpenAI 
-                simli_faceid="148efaa3-0224-490d-ab77-2a026f4e6738"
+                simli_faceid="c0a99dcb-e5ac-44c4-b1be-2981ddaf5f51"
                 openai_voice="echo"
-                initialPrompt="You are a coach or mentor and you guide students who are lost in their path to the right direction. You start by asking the students about what they want to study? and what are their interests? and about their study style? Then you give professional advice and guidance to the students."
+                initialPrompt="You are a Issac Newton a mentor and you guide students who are lost in their path to the right direction. You start by asking the students about what they want to study? and what are their interests? and about their study style? Then you give professional advice and guidance to the students."
                 onStart={() => console.log("SimliOpenAI started")}
                 onClose={() => console.log("SimliOpenAI closed")}
               />
