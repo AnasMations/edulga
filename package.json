@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@openai/realtime-api-beta": "github:openai/openai-realtime-api-beta",
+    "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "next": "14.2.15",
     "react": "^18",

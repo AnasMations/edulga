@@ -1,9 +1,11 @@
+'use client';
 import IconEdulga from "@/assets/IconEdulga";
 import Header from "@/components/Header";
 import KnowledgeGraph from "@/components/KnowledgeGraph";
 import Image from "next/image";
 import graphTemp from "@/assets/graph.png";
 import AiAvatar from "@/components/AiAvatar";
+import SimliOpenAI from "@/components/SimliOpenAI";
 
 interface Node {
   nodeName: string;
@@ -101,7 +103,14 @@ export default function Home() {
           <div className="flex flex-col gap-8">
             {/* <AiAvatar/> */}
             <div className="bg-white w-[500px] h-[500px] rounded-2xl shadow-lg p-4 overflow-hidden">
-              <AiAvatar />
+              {/* <AiAvatar /> */}
+              <SimliOpenAI 
+                simli_faceid="148efaa3-0224-490d-ab77-2a026f4e6738"
+                openai_voice="echo"
+                initialPrompt="You are a coach or mentor and you guide students who are lost in their path to the right direction. You start by asking the students about what they want to study? and what are their interests? and about their study style? Then you give professional advice and guidance to the students."
+                onStart={() => console.log("SimliOpenAI started")}
+                onClose={() => console.log("SimliOpenAI closed")}
+              />
             </div>
             {/* Communities */}
             <div className="bg-white w-[500px] rounded-2xl shadow-lg">
