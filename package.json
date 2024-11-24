@@ -12,6 +12,8 @@
     "@openai/realtime-api-beta": "github:openai/openai-realtime-api-beta",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
+    "formidable": "^3.5.2",
+    "lucide-react": "^0.460.0",
     "next": "14.2.15",
     "react": "^18",
     "react-dom": "^18",
