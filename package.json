@@ -17,7 +17,7 @@
     "next": "14.2.15",
     "react": "^18",
     "react-dom": "^18",
-    "simli-client": "^1.1.6",
+    "simli-client": "^1.2.0",
     "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {

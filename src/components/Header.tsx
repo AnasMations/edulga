@@ -8,7 +8,7 @@ interface Props {
 
 const Header = ({ className }: Props) => {
 
-    return <div className="fixed h-[100px] top-0 w-screen bg-gray-300 backdrop-blur-lg shadow-lg">
+    return <div className=" z-10 fixed h-[100px] top-0 w-screen bg-gray-300 backdrop-blur-lg shadow-lg">
         <IconEdulga className="h-[88px]" />
     </div>;
 }

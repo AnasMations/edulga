@@ -92,8 +92,8 @@ export default function Home() {
           <div className="flex flex-col gap-8">
             <div className="bg-white w-[500px] h-[500px] rounded-2xl shadow-lg p-4 overflow-hidden">
               <SimliOpenAI
-                simli_faceid="c0a99dcb-e5ac-44c4-b1be-2981ddaf5f51"
-                openai_voice="echo"
+                simli_faceid="101bef0d-b62d-4fbe-a6b4-89bc3fc66ec6"
+                openai_voice="shimmer"
                 initialPrompt="You are a Issac Newton a mentor and you guide students who are lost in their path to the right direction. You start by asking the students about what they want to study? and what are their interests? and about their study style? Then you give professional advice and guidance to the students."
                 onStart={() => console.log("SimliOpenAI started")}
                 onClose={() => console.log("SimliOpenAI closed")}
