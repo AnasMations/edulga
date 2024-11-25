@@ -1,11 +1,24 @@
 import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 
+// Define interfaces for the data structure
+interface RoadmapItem {
+  entity1: string;
+  relationship: string;
+  priority: 1 | 2 | 3 | 4 | 5 | 6;
+}
+
+interface RoadmapResponse {
+  roadmap: {
+    learning_roadmap: RoadmapItem[];
+  };
+}
+
 const Roadmap = () => {
   const [query, setQuery] = useState('');
-  const [roadmapData, setRoadmapData] = useState(null);
+  const [roadmapData, setRoadmapData] = useState<RoadmapItem[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleGenerateRoadmap = async () => {
     if (!query.trim()) return;
@@ -26,7 +39,7 @@ const Roadmap = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
+      const data = await response.json() as RoadmapResponse;
       setRoadmapData(data.roadmap.learning_roadmap);
       console.log('Roadmap Response:', data);
     } catch (err) {
@@ -37,8 +50,8 @@ const Roadmap = () => {
     }
   };
 
-  const getColorByPriority = (priority) => {
-    const colors = {
+  const getColorByPriority = (priority: RoadmapItem['priority']): string => {
+    const colors: Record<RoadmapItem['priority'], string> = {
       1: 'bg-[#FF4086]',
       2: 'bg-[#FF5E86]',
       3: 'bg-[#FF7C86]',

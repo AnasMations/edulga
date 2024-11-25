@@ -13,7 +13,7 @@ import Roadmap from "@/components/Roadmap";
 export default function Home() {
   const [graphData, setGraphData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<any>(null);
 
   const handleFileUpload = async (event: any) => {
     const file = event.target.files[0];
