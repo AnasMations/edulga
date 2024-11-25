@@ -49,12 +49,13 @@ export default function Home() {
   return (
     <div className="">
       <Header />
-      <div className="h-[108px]" />
-      <div className="p-8">
-        <div className="flex w-full justify-center items-start gap-8">
-          {/* Left Column */}
-          <div className="flex flex-col gap-8">
-            <div className="bg-white w-[800px] h-[500px] rounded-2xl shadow-lg p-4">
+      {/* <div className="h-[108px]" /> */}
+      <div className="p-8 w-full">
+        <div className="flex flex-col w-full justify-center items-center gap-8">
+          {/* Top */}
+          <div className="flex gap-8">
+            {/* Knowledge Graph */}
+            <div className="bg-white w-[800px] h-[500px] rounded-2xl shadow-lg p-0">
               <div className="bg-[#0B0532] w-full h-full rounded-2xl overflow-hidden">
                 {graphData && (
                   <NestedKnowledgeGraph
@@ -86,24 +87,25 @@ export default function Home() {
                 )}
               </div>
             </div>
+            {/* AI Avatar */}
+            <div className="bg-white w-[500px] h-[500px] rounded-2xl shadow-lg overflow-hidden">
+              <SimliOpenAI
+                simli_faceid="101bef0d-b62d-4fbe-a6b4-89bc3fc66ec6"
+                openai_voice="shimmer"
+                initialPrompt="You are a professional but exciting Cyborg a mentor and you guide students who are lost in their path to the right direction. You start by asking the students about what they want to study? and what are their interests? and about their study style? Then you give professional advice and guidance to the students."
+                onStart={() => console.log("SimliOpenAI started")}
+                onClose={() => console.log("SimliOpenAI closed")}
+              />
+            </div>
+          </div>
+          {/* Bottom */}
+          <div className="flex gap-8 items-center justify-center w-full">
             {/* Roadmap */}
-            <div className="bg-white w-[800px] h-[500px] rounded-2xl shadow-lg">
+            <div className="bg-white w-[1332px] h-[300px] rounded-2xl shadow-lg">
               <div className="bg-gray-300 w-full h-[64px] rounded-t-2xl flex items-center justify-start p-4">
                 <b>Learning Roadmap</b>
               </div>
               <Roadmap />
-            </div>
-          </div>
-          {/* Right Column */}
-          <div className="flex flex-col gap-8">
-            <div className="bg-white w-[500px] h-[500px] rounded-2xl shadow-lg p-4 overflow-hidden">
-              <SimliOpenAI
-                simli_faceid="101bef0d-b62d-4fbe-a6b4-89bc3fc66ec6"
-                openai_voice="shimmer"
-                initialPrompt="You are a Issac Newton a mentor and you guide students who are lost in their path to the right direction. You start by asking the students about what they want to study? and what are their interests? and about their study style? Then you give professional advice and guidance to the students."
-                onStart={() => console.log("SimliOpenAI started")}
-                onClose={() => console.log("SimliOpenAI closed")}
-              />
             </div>
             {/* Communities */}
             {/* <div className="bg-white w-[500px] rounded-2xl shadow-lg">

@@ -14,7 +14,7 @@ const Roadmap = () => {
     setError(null);
 
     try {
-      const response = await fetch('/api/generateRoadmap', {
+      const response = await fetch('/api/generate-roadmap', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ const Roadmap = () => {
   };
 
   return (
-    <div className="w-full h-full p-4">
+    <div className="w-full p-4">
       <div className="flex gap-4 mb-6">
         <input
           type="text"
