@@ -363,6 +363,7 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
     setError("");
     stopRecording();
     setIsAvatarVisible(false);
+
     simliClient?.close();
     openAIClientRef.current?.disconnect();
     if (audioContextRef.current) {
@@ -404,18 +405,28 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
       <audio ref={audioRef} autoPlay></audio>
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
         {!isAvatarVisible ? (
-          <button
-            onClick={handleStart}
-            className="rounded bg-white py-2 px-4 hover:bg-opacity-70"
-          >
-            <b>Start</b>
-          </button>
+          <>
+            {!isLoading ? (
+              <button
+                onClick={handleStart}
+                className="rounded bg-white py-2 px-4 hover:bg-opacity-70"
+              >
+                <b>Start</b>
+              </button>
+            ) : (
+              <div
+                className="rounded bg-white py-2 px-4"
+              >
+                <b>Loading...</b>
+              </div>
+            )}
+          </>
         ) : (
           <button
             onClick={handleStop}
-            className="rounded bg-red-600 text-white py-2 px-4 hover:bg-opacity-70"
+            className="text-white py-2 px-4 hover:bg-opacity-70"
           >
-            <b>Close</b>
+            <b>X</b>
           </button>
         )}
       </div>
