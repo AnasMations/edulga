@@ -50,7 +50,7 @@ export default function Home() {
     <div className="">
       <Header />
       {/* <div className="h-[108px]" /> */}
-      <div className="p-8 w-full">
+      <div className="p-8 pt-0 w-full">
         <div className="flex flex-col w-full justify-center items-center gap-8">
           {/* Top */}
           <div className="flex gap-8">
