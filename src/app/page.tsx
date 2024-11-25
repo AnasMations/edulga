@@ -8,6 +8,7 @@ import graphTemp from "@/assets/graph.png";
 import AiAvatar from "@/components/AiAvatar";
 import SimliOpenAI from "@/components/SimliOpenAI";
 import NestedKnowledgeGraph from "@/components/KnowledgeGraph";
+import Roadmap from "@/components/Roadmap";
 
 export default function Home() {
   const [graphData, setGraphData] = useState(null);
@@ -22,11 +23,11 @@ export default function Home() {
     setIsLoading(true);
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
 
     try {
-      const response = await fetch('/api/generate-knowledge-graph', {
-        method: 'POST',
+      const response = await fetch("/api/generate-knowledge-graph", {
+        method: "POST",
         body: formData,
       });
 
@@ -35,11 +36,11 @@ export default function Home() {
       }
 
       const data = await response.json();
-      console.log('API Response:', data);
+      console.log("API Response:", data);
       setGraphData(data);
     } catch (err) {
-      setError('Failed to process PDF. Please try again.');
-      console.error('Error:', err);
+      setError("Failed to process PDF. Please try again.");
+      console.error("Error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +64,9 @@ export default function Home() {
                 )}
                 {!graphData && (
                   <div className="flex flex-col items-center justify-center h-full text-white gap-4">
-                    <p className="text-lg mb-2">Upload a PDF to generate the knowledge graph</p>
+                    <p className="text-lg mb-2">
+                      Upload a PDF to generate the knowledge graph
+                    </p>
                     <label className="cursor-pointer">
                       <input
                         type="file"
@@ -76,7 +79,9 @@ export default function Home() {
                       </div>
                     </label>
                     {error && <p className="text-red-500 mt-2">{error}</p>}
-                    {isLoading && <p className="text-white mt-2">Processing PDF...</p>}
+                    {isLoading && (
+                      <p className="text-white mt-2">Processing PDF...</p>
+                    )}
                   </div>
                 )}
               </div>
@@ -84,8 +89,9 @@ export default function Home() {
             {/* Roadmap */}
             <div className="bg-white w-[800px] h-[500px] rounded-2xl shadow-lg">
               <div className="bg-gray-300 w-full h-[64px] rounded-t-2xl flex items-center justify-start p-4">
-                <b>Learning</b>
+                <b>Learning Roadmap</b>
               </div>
+              <Roadmap />
             </div>
           </div>
           {/* Right Column */}
