@@ -11,7 +11,196 @@ import NestedKnowledgeGraph from "@/components/KnowledgeGraph";
 import Roadmap from "@/components/Roadmap";
 
 export default function Home() {
-  const [graphData, setGraphData] = useState(null);
+  const [graphData, setGraphData] = useState({
+    title: "The Brain",
+    topics: [
+      {
+        title: "The Brain",
+        topics: [
+          {
+            title: "Mathematics",
+            topics: [
+              { title: "Algebra" },
+              { title: "Calculus" },
+              { title: "Geometry" },
+              { title: "Statistics" },
+              { title: "Number Theory" },
+              { title: "Topology" },
+              { title: "Combinatorics" },
+              { title: "Discrete Mathematics" },
+              { title: "Mathematical Logic" },
+              { title: "Applied Mathematics" },
+            ],
+          },
+          {
+            title: "Computer Science",
+            topics: [
+              { title: "Algorithms" },
+              { title: "Data Structures" },
+              { title: "Artificial Intelligence" },
+              { title: "Machine Learning" },
+              { title: "Software Engineering" },
+              { title: "Web Development" },
+              { title: "Cybersecurity" },
+              { title: "Database Systems" },
+              { title: "Human-Computer Interaction" },
+              { title: "Computer Networks" },
+            ],
+          },
+          {
+            title: "Physics",
+            topics: [
+              { title: "Classical Mechanics" },
+              { title: "Quantum Mechanics" },
+              { title: "Thermodynamics" },
+              { title: "Electromagnetism" },
+              { title: "Relativity" },
+              { title: "Astrophysics" },
+              { title: "Nuclear Physics" },
+              { title: "Particle Physics" },
+              { title: "Condensed Matter Physics" },
+              { title: "Optics" },
+            ],
+          },
+          {
+            title: "Biology",
+            topics: [
+              { title: "Cell Biology" },
+              { title: "Genetics" },
+              { title: "Evolutionary Biology" },
+              { title: "Ecology" },
+              { title: "Microbiology" },
+              { title: "Molecular Biology" },
+              { title: "Physiology" },
+              { title: "Botany" },
+              { title: "Zoology" },
+              { title: "Biotechnology" },
+            ],
+          },
+          {
+            title: "Chemistry",
+            topics: [
+              { title: "Organic Chemistry" },
+              { title: "Inorganic Chemistry" },
+              { title: "Physical Chemistry" },
+              { title: "Analytical Chemistry" },
+              { title: "Biochemistry" },
+              { title: "Theoretical Chemistry" },
+              { title: "Materials Science" },
+              { title: "Environmental Chemistry" },
+              { title: "Industrial Chemistry" },
+              { title: "Chemical Engineering" },
+            ],
+          },
+          {
+            title: "Business",
+            topics: [
+              { title: "Marketing" },
+              { title: "Finance" },
+              { title: "Management" },
+              { title: "Entrepreneurship" },
+              { title: "Human Resources" },
+              { title: "Operations" },
+              { title: "Supply Chain Management" },
+              { title: "Business Strategy" },
+              { title: "E-commerce" },
+              { title: "Corporate Governance" },
+            ],
+          },
+          {
+            title: "Psychology",
+            topics: [
+              { title: "Cognitive Psychology" },
+              { title: "Developmental Psychology" },
+              { title: "Social Psychology" },
+              { title: "Clinical Psychology" },
+              { title: "Neuroscience" },
+              { title: "Behavioral Psychology" },
+              { title: "Personality Psychology" },
+              { title: "Industrial-Organizational Psychology" },
+              { title: "Forensic Psychology" },
+              { title: "Health Psychology" },
+            ],
+          },
+          {
+            title: "Literature",
+            topics: [
+              { title: "Poetry" },
+              { title: "Fiction" },
+              { title: "Non-fiction" },
+              { title: "Drama" },
+              { title: "Literary Theory" },
+              { title: "Comparative Literature" },
+              { title: "Narrative" },
+              { title: "Postmodernism" },
+              { title: "Symbolism" },
+              { title: "Literary Criticism" },
+            ],
+          },
+          {
+            title: "Economics",
+            topics: [
+              { title: "Microeconomics" },
+              { title: "Macroeconomics" },
+              { title: "Behavioral Economics" },
+              { title: "Development Economics" },
+              { title: "International Economics" },
+              { title: "Labor Economics" },
+              { title: "Public Economics" },
+              { title: "Environmental Economics" },
+              { title: "Game Theory" },
+              { title: "Econometrics" },
+            ],
+          },
+          {
+            title: "Ethics",
+            topics: [
+              { title: "Normative Ethics" },
+              { title: "Meta-Ethics" },
+              { title: "Applied Ethics" },
+              { title: "Bioethics" },
+              { title: "Environmental Ethics" },
+              { title: "Business Ethics" },
+              { title: "Virtue Ethics" },
+              { title: "Deontological Ethics" },
+              { title: "Consequentialism" },
+              { title: "Social Ethics" },
+            ],
+          },
+          {
+            title: "Politics",
+            topics: [
+              { title: "Political Theory" },
+              { title: "Comparative Politics" },
+              { title: "International Relations" },
+              { title: "Public Policy" },
+              { title: "Political Economy" },
+              { title: "Political Institutions" },
+              { title: "Political Behavior" },
+              { title: "Global Governance" },
+              { title: "Political Ideologies" },
+              { title: "Conflict Studies" },
+            ],
+          },
+          {
+            title: "Art",
+            topics: [
+              { title: "Visual Arts" },
+              { title: "Performing Arts" },
+              { title: "Literary Arts" },
+              { title: "Art History" },
+              { title: "Art Theory" },
+              { title: "Contemporary Art" },
+              { title: "Art Criticism" },
+              { title: "Sculpture" },
+              { title: "Photography" },
+              { title: "Installation Art" },
+            ],
+          },
+        ],
+      },
+    ],
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<any>(null);
 
@@ -105,7 +294,7 @@ export default function Home() {
               <div className="bg-gray-300 w-full h-[64px] rounded-t-2xl flex items-center justify-start p-4">
                 <b>Learning Roadmap</b>
               </div>
-              <Roadmap />
+              <Roadmap data={null} />
             </div>
             {/* Communities */}
             {/* <div className="bg-white w-[500px] rounded-2xl shadow-lg">

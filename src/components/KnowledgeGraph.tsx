@@ -43,8 +43,8 @@ const INITIAL_VIEWPORT: ViewportState = {
 
 const MIN_SCALE = 0.1;
 const MAX_SCALE = 5;
-const ZOOM_SPEED = 0.001;
-const ZOOM_SMOOTH_FACTOR = 0.15;
+const ZOOM_SPEED = 0.005;
+const ZOOM_SMOOTH_FACTOR = 0.3;
 
 const NestedKnowledgeGraph: React.FC<Props> = ({ className, data }) => {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -286,8 +286,8 @@ const NestedKnowledgeGraph: React.FC<Props> = ({ className, data }) => {
         const ds = (targetViewport.scale - current.scale) * ZOOM_SMOOTH_FACTOR;
 
         const newViewport = {
-          x: current.x + dx,
-          y: current.y + dy,
+          x: (current.x + dx)/2,
+          y: (current.y + dy)/2,
           width: current.width + dw,
           height: current.height + dh,
           scale: current.scale + ds,
@@ -423,8 +423,8 @@ const NestedKnowledgeGraph: React.FC<Props> = ({ className, data }) => {
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
     if (!isDragging) return;
 
-    const dx = (e.clientX - dragStart.x) / targetViewport.scale;
-    const dy = (e.clientY - dragStart.y) / targetViewport.scale;
+    const dx = ((e.clientX - dragStart.x) / targetViewport.scale) *10;
+    const dy = ((e.clientY - dragStart.y) / targetViewport.scale) *10;
 
     setTargetViewport((current) => ({
       ...current,
@@ -483,7 +483,7 @@ const NestedKnowledgeGraph: React.FC<Props> = ({ className, data }) => {
         <div className="flex flex-col gap-1 bg-white rounded-lg shadow-lg overflow-hidden">
           <button
             onClick={() => {
-              const newScale = Math.min(MAX_SCALE, targetViewport.scale * 1.2);
+              const newScale = Math.min(MAX_SCALE, targetViewport.scale * 2);
               setTargetViewport((current) => ({
                 ...current,
                 width: INITIAL_VIEWPORT.width * (current.scale / newScale),
@@ -512,7 +512,7 @@ const NestedKnowledgeGraph: React.FC<Props> = ({ className, data }) => {
           <div className="w-full h-px bg-gray-200" />
           <button
             onClick={() => {
-              const newScale = Math.max(MIN_SCALE, targetViewport.scale / 1.2);
+              const newScale = Math.max(MIN_SCALE, targetViewport.scale / 2);
               setTargetViewport((current) => ({
                 ...current,
                 width: INITIAL_VIEWPORT.width * (current.scale / newScale),
