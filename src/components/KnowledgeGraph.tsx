@@ -119,6 +119,23 @@ const NestedKnowledgeGraph: React.FC<Props> = ({ className, data }) => {
         processNode(topic, "root", `topic-${index}`, 1);
       });
     } else {
+      // Check if this is "The Brain" topic and set it as root
+      if ((nestedData as NestedTopic).title === "The Brain") {
+        const rootNode: Node = {
+          id: "root",
+          label: (nestedData as NestedTopic).title,
+          description: (nestedData as NestedTopic).definition?.title || "",
+          edges: [],
+          depth: 0,
+        };
+        nodes.push(rootNode);
+
+        const nestedTopics =
+          (nestedData as NestedTopic).definition?.topics || [];
+        nestedTopics.forEach((topic, index) => {
+          processNode(topic, "root", `topic-${index}`, 1);
+        });
+      }
       processNode(nestedData as NestedTopic, parentId, "topic", currentDepth);
     }
 
@@ -261,7 +278,7 @@ const NestedKnowledgeGraph: React.FC<Props> = ({ className, data }) => {
     nodesByDepth.forEach((depthNodes, depth) => {
       if (depth === 0) return;
 
-      const radius = depth * 300;
+      const radius = depth * 800;
       const angleStep = (2 * Math.PI) / depthNodes.length;
 
       depthNodes.forEach((node, index) => {
@@ -286,8 +303,8 @@ const NestedKnowledgeGraph: React.FC<Props> = ({ className, data }) => {
         const ds = (targetViewport.scale - current.scale) * ZOOM_SMOOTH_FACTOR;
 
         const newViewport = {
-          x: (current.x + dx)/2,
-          y: (current.y + dy)/2,
+          x: (current.x + dx) / 2,
+          y: (current.y + dy) / 2,
           width: current.width + dw,
           height: current.height + dh,
           scale: current.scale + ds,
@@ -330,13 +347,6 @@ const NestedKnowledgeGraph: React.FC<Props> = ({ className, data }) => {
 
       if (!svgRef.current) return;
 
-      const svgPoint = svgRef.current.createSVGPoint();
-      svgPoint.x = mouseX;
-      svgPoint.y = mouseY;
-      const pointInGraph = svgPoint.matrixTransform(
-        svgRef.current.getScreenCTM()!.inverse()
-      );
-
       const zoomDelta = -e.deltaY * ZOOM_SPEED;
       const newScale = Math.max(
         MIN_SCALE,
@@ -344,13 +354,14 @@ const NestedKnowledgeGraph: React.FC<Props> = ({ className, data }) => {
       );
       const scaleFactor = newScale / targetViewport.scale;
 
+      // Calculate the point to zoom towards (center of viewport)
+      const viewportCenterX = targetViewport.x + targetViewport.width / 2;
+      const viewportCenterY = targetViewport.y + targetViewport.height / 2;
+
       setTargetViewport((current) => ({
-        x:
-          pointInGraph.x -
-          (mouseX / newScale) * (current.width / container.clientWidth),
-        y:
-          pointInGraph.y -
-          (mouseY / newScale) * (current.height / container.clientHeight),
+        ...current,
+        x: viewportCenterX - (viewportCenterX - current.x) / scaleFactor,
+        y: viewportCenterY - (viewportCenterY - current.y) / scaleFactor,
         width: current.width / scaleFactor,
         height: current.height / scaleFactor,
         scale: newScale,
@@ -423,8 +434,8 @@ const NestedKnowledgeGraph: React.FC<Props> = ({ className, data }) => {
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
     if (!isDragging) return;
 
-    const dx = ((e.clientX - dragStart.x) / targetViewport.scale) *10;
-    const dy = ((e.clientY - dragStart.y) / targetViewport.scale) *10;
+    const dx = ((e.clientX - dragStart.x) / targetViewport.scale) * 10;
+    const dy = ((e.clientY - dragStart.y) / targetViewport.scale) * 10;
 
     setTargetViewport((current) => ({
       ...current,
@@ -484,10 +495,13 @@ const NestedKnowledgeGraph: React.FC<Props> = ({ className, data }) => {
           <button
             onClick={() => {
               const newScale = Math.min(MAX_SCALE, targetViewport.scale * 2);
+              const scaleFactor = newScale / targetViewport.scale;
               setTargetViewport((current) => ({
                 ...current,
-                width: INITIAL_VIEWPORT.width * (current.scale / newScale),
-                height: INITIAL_VIEWPORT.height * (current.scale / newScale),
+                x: current.x + (current.width / 2) * (1 - 1 / scaleFactor),
+                y: current.y + (current.height / 2) * (1 - 1 / scaleFactor),
+                width: current.width / scaleFactor,
+                height: current.height / scaleFactor,
                 scale: newScale,
               }));
             }}
@@ -513,10 +527,13 @@ const NestedKnowledgeGraph: React.FC<Props> = ({ className, data }) => {
           <button
             onClick={() => {
               const newScale = Math.max(MIN_SCALE, targetViewport.scale / 2);
+              const scaleFactor = newScale / targetViewport.scale;
               setTargetViewport((current) => ({
                 ...current,
-                width: INITIAL_VIEWPORT.width * (current.scale / newScale),
-                height: INITIAL_VIEWPORT.height * (current.scale / newScale),
+                x: current.x + (current.width / 2) * (1 - 1 / scaleFactor),
+                y: current.y + (current.height / 2) * (1 - 1 / scaleFactor),
+                width: current.width / scaleFactor,
+                height: current.height / scaleFactor,
                 scale: newScale,
               }));
             }}
