@@ -10,9 +10,27 @@ import SimliOpenAI from "@/components/SimliOpenAI";
 import NestedKnowledgeGraph from "@/components/KnowledgeGraph";
 import Roadmap from "@/components/Roadmap";
 
+// Define types for our data structures
+interface Topic {
+  title: string;
+  topics?: Topic[];
+}
+
+interface APITopic {
+  topic: string;
+  definition: {
+    topics?: Array<APITopic>;
+  };
+}
+
+interface GraphData {
+  subject: string;
+  topics: Topic[];
+}
+
 export default function Home() {
-  const [graphData, setGraphData] = useState({
-    title: "The Brain",
+  const initialBrainGraphData = {
+    subject: "The Brain",
     topics: [
       {
         title: "Mathematics",
@@ -20,13 +38,8 @@ export default function Home() {
           { title: "Algebra" },
           { title: "Calculus" },
           { title: "Geometry" },
-          { title: "Statistics" },
           { title: "Number Theory" },
-          { title: "Topology" },
-          { title: "Combinatorics" },
           { title: "Discrete Mathematics" },
-          { title: "Mathematical Logic" },
-          { title: "Applied Mathematics" },
         ],
       },
       {
@@ -37,11 +50,6 @@ export default function Home() {
           { title: "Artificial Intelligence" },
           { title: "Machine Learning" },
           { title: "Software Engineering" },
-          { title: "Web Development" },
-          { title: "Cybersecurity" },
-          { title: "Database Systems" },
-          { title: "Human-Computer Interaction" },
-          { title: "Computer Networks" },
         ],
       },
       {
@@ -49,13 +57,8 @@ export default function Home() {
         topics: [
           { title: "Classical Mechanics" },
           { title: "Quantum Mechanics" },
-          { title: "Thermodynamics" },
-          { title: "Electromagnetism" },
-          { title: "Relativity" },
-          { title: "Astrophysics" },
           { title: "Nuclear Physics" },
           { title: "Particle Physics" },
-          { title: "Condensed Matter Physics" },
           { title: "Optics" },
         ],
       },
@@ -64,14 +67,8 @@ export default function Home() {
         topics: [
           { title: "Cell Biology" },
           { title: "Genetics" },
-          { title: "Evolutionary Biology" },
-          { title: "Ecology" },
           { title: "Microbiology" },
-          { title: "Molecular Biology" },
-          { title: "Physiology" },
-          { title: "Botany" },
           { title: "Zoology" },
-          { title: "Biotechnology" },
         ],
       },
       {
@@ -79,14 +76,9 @@ export default function Home() {
         topics: [
           { title: "Organic Chemistry" },
           { title: "Inorganic Chemistry" },
-          { title: "Physical Chemistry" },
-          { title: "Analytical Chemistry" },
-          { title: "Biochemistry" },
           { title: "Theoretical Chemistry" },
-          { title: "Materials Science" },
           { title: "Environmental Chemistry" },
           { title: "Industrial Chemistry" },
-          { title: "Chemical Engineering" },
         ],
       },
       {
@@ -97,11 +89,7 @@ export default function Home() {
           { title: "Management" },
           { title: "Entrepreneurship" },
           { title: "Human Resources" },
-          { title: "Operations" },
           { title: "Supply Chain Management" },
-          { title: "Business Strategy" },
-          { title: "E-commerce" },
-          { title: "Corporate Governance" },
         ],
       },
       {
@@ -112,11 +100,6 @@ export default function Home() {
           { title: "Social Psychology" },
           { title: "Clinical Psychology" },
           { title: "Neuroscience" },
-          { title: "Behavioral Psychology" },
-          { title: "Personality Psychology" },
-          { title: "Industrial-Organizational Psychology" },
-          { title: "Forensic Psychology" },
-          { title: "Health Psychology" },
         ],
       },
       {
@@ -126,81 +109,104 @@ export default function Home() {
           { title: "Fiction" },
           { title: "Non-fiction" },
           { title: "Drama" },
-          { title: "Literary Theory" },
-          { title: "Comparative Literature" },
           { title: "Narrative" },
-          { title: "Postmodernism" },
-          { title: "Symbolism" },
-          { title: "Literary Criticism" },
         ],
       },
       {
         title: "Economics",
-        topics: [
-          { title: "Microeconomics" },
-          { title: "Macroeconomics" },
-          { title: "Behavioral Economics" },
-          { title: "Development Economics" },
-          { title: "International Economics" },
-          { title: "Labor Economics" },
-          { title: "Public Economics" },
-          { title: "Environmental Economics" },
-          { title: "Game Theory" },
-          { title: "Econometrics" },
-        ],
-      },
-      {
-        title: "Ethics",
-        topics: [
-          { title: "Normative Ethics" },
-          { title: "Meta-Ethics" },
-          { title: "Applied Ethics" },
-          { title: "Bioethics" },
-          { title: "Environmental Ethics" },
-          { title: "Business Ethics" },
-          { title: "Virtue Ethics" },
-          { title: "Deontological Ethics" },
-          { title: "Consequentialism" },
-          { title: "Social Ethics" },
-        ],
-      },
-      {
-        title: "Politics",
-        topics: [
-          { title: "Political Theory" },
-          { title: "Comparative Politics" },
-          { title: "International Relations" },
-          { title: "Public Policy" },
-          { title: "Political Economy" },
-          { title: "Political Institutions" },
-          { title: "Political Behavior" },
-          { title: "Global Governance" },
-          { title: "Political Ideologies" },
-          { title: "Conflict Studies" },
-        ],
+        topics: [{ title: "Microeconomics" }, { title: "Macroeconomics" }],
       },
       {
         title: "Art",
-        topics: [
-          { title: "Visual Arts" },
-          { title: "Performing Arts" },
-          { title: "Literary Arts" },
-          { title: "Art History" },
-          { title: "Art Theory" },
-          { title: "Contemporary Art" },
-          { title: "Art Criticism" },
-          { title: "Sculpture" },
-          { title: "Photography" },
-          { title: "Installation Art" },
-        ],
+        topics: [{ title: "Visual Arts" }, { title: "Photography" }],
       },
     ],
-  });
+  };
+  const [brainGraphData, setBrainGraphData] = useState(initialBrainGraphData);
+  const [graphData, setGraphData] = useState(initialBrainGraphData);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<any>(null);
+  const [simliPrompt, setSimliPrompt] = useState(
+    "You are an excited Cyborg a mentor and you guide students about the subjects and topics they are interested in."
+  );
+  const [roadmapData, setRoadmapData] = useState<any>(null);
+  const [startSimli, setStartSimli] = useState(false);
+
+  const updateSimliPrompt = (apiResponse: any) => {
+    const newTopicsInfo = apiResponse.topics
+      .map((topic: any) => `${topic.topic}: ${topic.definition?.description || ""}`)
+      .join(". ");
+
+    const updatedPrompt = `${simliPrompt} Based on the uploaded content, here's what we're discussing: Subject - ${apiResponse.subject}. Topics covered: ${newTopicsInfo}. Please incorporate this information in your guidance.`;
+
+    return updatedPrompt;
+  };
+
+  const createRoadmapData = (apiResponse: any) => {
+    return {
+      subject: apiResponse.subject,
+      topics: apiResponse.topics.map((topic: any) => ({
+        title: topic.topic,
+        description: topic.definition?.description || "",
+        subtopics: topic.definition?.topics || [],
+      })),
+    };
+  };
+
+  const convertAPITopicsToGraphFormat = (apiTopics: APITopic[]) => {
+    return apiTopics.map((topic) => ({
+      title: topic.topic,
+      topics: [], // If you need to handle nested topics, you can process topic.definition.topics here
+    }));
+  };
+
+  const mergeWithExistingTopic = (existingTopics: any, apiResponse: any) => {
+    const updatedTopics = [...existingTopics];
+
+    // Find if the subject exists in current topics
+    const existingTopicIndex = updatedTopics.findIndex(
+      (topic) => topic.title.toLowerCase() === apiResponse.subject.toLowerCase()
+    );
+
+    if (existingTopicIndex !== -1) {
+      // Convert API topics to the correct format
+      const newTopics = convertAPITopicsToGraphFormat(apiResponse.topics);
+
+      // Get existing topics
+      const existingSubTopics = updatedTopics[existingTopicIndex].topics || [];
+
+      // Merge topics, avoiding duplicates
+      const mergedTopics = [...existingSubTopics];
+      newTopics.forEach((newTopic) => {
+        if (
+          !mergedTopics.some(
+            (existing) =>
+              existing.title.toLowerCase() === newTopic.title.toLowerCase()
+          )
+        ) {
+          mergedTopics.push(newTopic);
+        }
+      });
+
+      // Update the existing topic with merged topics
+      updatedTopics[existingTopicIndex] = {
+        ...updatedTopics[existingTopicIndex],
+        topics: mergedTopics,
+      };
+    } else {
+      // If subject doesn't exist, create a new topic for it
+      const newTopic = {
+        title: apiResponse.subject,
+        topics: convertAPITopicsToGraphFormat(apiResponse.topics),
+      };
+      updatedTopics.push(newTopic);
+    }
+
+    return updatedTopics;
+  };
 
   const handleFileUpload = async (event: any) => {
-    const file = event.target.files[0];
+    const file = event.target.files?.[0];
     if (!file) return;
 
     setError(null);
@@ -219,9 +225,25 @@ export default function Home() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      console.log("API Response:", data);
-      setGraphData(data);
+      const apiResponse = await response.json();
+      console.log("API Response:", apiResponse);
+
+      // Update brain graph data
+      const updatedBrainGraphData = {
+        ...brainGraphData,
+        topics: mergeWithExistingTopic(brainGraphData.topics, apiResponse),
+      };
+      setBrainGraphData(updatedBrainGraphData);
+      setGraphData(updatedBrainGraphData);
+
+      // Update Simli prompt
+      const updatedPrompt = updateSimliPrompt(apiResponse);
+      setSimliPrompt(updatedPrompt);
+      setStartSimli(true);
+
+      // Update Roadmap data
+      const newRoadmapData = createRoadmapData(apiResponse);
+      setRoadmapData(newRoadmapData);
     } catch (err) {
       setError("Failed to process PDF. Please try again.");
       console.error("Error:", err);
@@ -232,7 +254,24 @@ export default function Home() {
 
   return (
     <div className="">
-      <Header />
+      <div className="flex items-center justify-between p-4 w-full">
+          <IconEdulga className="h-[88px]" />
+        <div className="flex flex-col items-center justify-center text-black gap-4">
+          <label className="cursor-pointer">
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+            <div className="rounded bg-white text-black py-2 px-4 hover:bg-opacity-70 shadow-lg">
+              <b>Upload PDF File</b>
+            </div>
+          </label>
+          {error && <p className="text-red-500 mt-2">{error}</p>}
+          {isLoading && <p className="text-black mt-2">Processing PDF...</p>}
+        </div>
+      </div>
       {/* <div className="h-[108px]" /> */}
       <div className="p-8 pt-0 w-full">
         <div className="flex flex-col w-full justify-center items-center gap-8">
@@ -247,49 +286,29 @@ export default function Home() {
                     className="w-full h-full"
                   />
                 )}
-                {!graphData && (
-                  <div className="flex flex-col items-center justify-center h-full text-white gap-4">
-                    <p className="text-lg mb-2">
-                      Upload a PDF to generate the knowledge graph
-                    </p>
-                    <label className="cursor-pointer">
-                      <input
-                        type="file"
-                        accept=".pdf"
-                        onChange={handleFileUpload}
-                        className="hidden"
-                      />
-                      <div className="rounded bg-white text-black py-2 px-4 hover:bg-opacity-70">
-                        <b>Choose PDF File</b>
-                      </div>
-                    </label>
-                    {error && <p className="text-red-500 mt-2">{error}</p>}
-                    {isLoading && (
-                      <p className="text-white mt-2">Processing PDF...</p>
-                    )}
-                  </div>
-                )}
               </div>
             </div>
             {/* AI Avatar */}
             <div className="bg-white w-[500px] h-[500px] rounded-2xl shadow-lg overflow-hidden">
-              <SimliOpenAI
-                simli_faceid="101bef0d-b62d-4fbe-a6b4-89bc3fc66ec6"
-                openai_voice="shimmer"
-                initialPrompt="You are a professional but exciting Cyborg a mentor and you guide students who are lost in their path to the right direction. You start by asking the students about what they want to study? and what are their interests? and about their study style? Then you give professional advice and guidance to the students."
-                onStart={() => console.log("SimliOpenAI started")}
-                onClose={() => console.log("SimliOpenAI closed")}
-              />
+              {startSimli && (
+                <SimliOpenAI
+                  simli_faceid="101bef0d-b62d-4fbe-a6b4-89bc3fc66ec6"
+                  openai_voice="shimmer"
+                  initialPrompt={simliPrompt}
+                  onStart={() => console.log("SimliOpenAI started")}
+                  onClose={() => console.log("SimliOpenAI closed")}
+                />
+              )}
             </div>
           </div>
           {/* Bottom */}
           <div className="flex gap-8 items-center justify-center w-full">
             {/* Roadmap */}
             <div className="bg-white w-[1332px] h-[300px] rounded-2xl shadow-lg">
-              <div className="bg-gray-300 w-full h-[64px] rounded-t-2xl flex items-center justify-start p-4">
+              <div className="bg-gray-300 w-[180px] h-[40px] rounded-tl-2xl rounded-br-2xl flex items-center justify-start p-4">
                 <b>Learning Roadmap</b>
               </div>
-              <Roadmap data={null} />
+              <Roadmap data={roadmapData} />
             </div>
             {/* Communities */}
             {/* <div className="bg-white w-[500px] rounded-2xl shadow-lg">

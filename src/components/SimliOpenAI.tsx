@@ -397,7 +397,18 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
         }
       });
     }
-  }, []);
+  }, [initialPrompt]);
+
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+
+    handleStart();
+    console.log("Initial prompt changed:", initialPrompt);
+
+  }, [initialPrompt]);
 
   return (
     <div className="relative bg-gray-300 w-full h-full rounded-lg overflow-hidden">

@@ -96,7 +96,7 @@ const Roadmap = ({ data } : any) => {
         ) : (
           !isLoading && !error && (
             <div className="text-center text-gray-500 py-12">
-              No roadmap data available
+              Upload PDF material to generate roadmap
             </div>
           )
         )}

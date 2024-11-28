@@ -123,7 +123,7 @@ const NestedKnowledgeGraph: React.FC<Props> = ({ className, data }) => {
       if ((nestedData as NestedTopic).title === "The Brain") {
         const rootNode: Node = {
           id: "root",
-          label: (nestedData as NestedTopic).title,
+          label: (nestedData as NestedTopic).title || "",
           description: (nestedData as NestedTopic).definition?.title || "",
           edges: [],
           depth: 0,
